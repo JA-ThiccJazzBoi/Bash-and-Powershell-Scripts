@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#This scrip will look at the system and email the sys admin when the disk is at 90% capacity
+
+
+df-H | grep -vE '^Filesystem|tmpfs|cdrom' | awk '{print $5 " " }' | while read output;
+do
+  echo $output
+  usep=$(echo $output | awk ' {print $1}' cut -d'%'-f1 )
+   partition=$(echo $output | awk '{ print $2 }' )
+   if [ $usep -ge 90 ]; then
+   echo "Running out of space \"$partition ($usep%)\" on $(hostname) as on $(date)" |
+    mail -s "Alert: Almost out of disk space $usep%" me@importamtsystem.com
+ fi
+
+done
