@@ -1,0 +1,32 @@
+#This script will search the Google News and return any mention of police brutality to a CSV file.
+
+
+from bs4 import BeautifulSoup
+import requests
+import csv
+
+
+source = requests.get('https://news.google.com/search?for=police%20brutality&hl=en-US&gl=US&ceid=US%3Aen').text
+
+soup = BeautifulSoup(source, 'lxml')
+
+outCSV_file = open('brutality.csv' , 'w')
+scribe = csv.writer(outCSV_file)
+scribe.writerow(['headline'])
+
+
+for article in soup.find_all('article'):
+    headline = article.text
+    print(headline)
+    print()
+
+    scribe.writerow([headline])
+scribe.close()
+
+#Saxophones Belong In The Orchersta
+
+# #BlackLivesMatter 
+
+
+
+
